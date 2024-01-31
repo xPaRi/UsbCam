@@ -1,0 +1,17 @@
+C:\dev.x\UsbCam\bin\Debug\UsbCam.exe.config
+C:\dev.x\UsbCam\bin\Debug\UsbCam.exe
+C:\dev.x\UsbCam\bin\Debug\UsbCam.pdb
+C:\dev.x\UsbCam\bin\Debug\AForge.dll
+C:\dev.x\UsbCam\bin\Debug\AForge.Video.DirectShow.dll
+C:\dev.x\UsbCam\bin\Debug\AForge.Video.dll
+C:\dev.x\UsbCam\bin\Debug\AForge.xml
+C:\dev.x\UsbCam\bin\Debug\AForge.Video.xml
+C:\dev.x\UsbCam\bin\Debug\AForge.Video.DirectShow.xml
+C:\dev.x\UsbCam\obj\Debug\UsbCam.csproj.AssemblyReference.cache
+C:\dev.x\UsbCam\obj\Debug\UsbCam.Form1.resources
+C:\dev.x\UsbCam\obj\Debug\UsbCam.Properties.Resources.resources
+C:\dev.x\UsbCam\obj\Debug\UsbCam.csproj.GenerateResource.cache
+C:\dev.x\UsbCam\obj\Debug\UsbCam.csproj.CoreCompileInputs.cache
+C:\dev.x\UsbCam\obj\Debug\UsbCam.csproj.CopyComplete
+C:\dev.x\UsbCam\obj\Debug\UsbCam.exe
+C:\dev.x\UsbCam\obj\Debug\UsbCam.pdb

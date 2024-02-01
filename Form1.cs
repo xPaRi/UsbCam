@@ -17,6 +17,7 @@ using IDEA.UniLib.Extensions;
 using System.Reflection;
 using Microsoft.Win32;
 using System.Runtime.Remoting.Channels;
+using AForge;
 
 
 namespace UsbCam
@@ -26,6 +27,7 @@ namespace UsbCam
         private const string DEVICE_KEY = "Device";
         private const string ALWAYS_ON_TOP_KEY = "AlwaysOnTop";
         private const string PEN_SET_KEY = "PenSet";
+        private const string SIZE_MODE_KEY = "SizeMode";
 
         private int Angle = 0;
         private int AngleMark = 0;
@@ -47,14 +49,20 @@ namespace UsbCam
 
             PenSetDict.DefaultInit();
             ShowPenSetDictToMenu();
-            SetPenSet(UserAppRegistryKey.GetData(PEN_SET_KEY, ""));
+            SetPenSet(UserAppRegistryKey.GetData(PEN_SET_KEY, string.Empty));
 
             ConCircleDiameter.Value = CircleDiameter;
             ConAngle.Value = Angle;
 
-            pictureBox.BackColor = Color.Gray;
-            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            
+            MnuNormal.Tag = PictureBoxSizeMode.Normal;
+            MnuCenter.Tag = PictureBoxSizeMode.CenterImage;
+            MnuZoom.Tag = PictureBoxSizeMode.Zoom;
+            MnuSizeMode.DropDownItemClicked += (sender, e) => SetSizeMode((PictureBoxSizeMode)e.ClickedItem.Tag);
+
+            SetSizeMode(UserAppRegistryKey.GetData(SIZE_MODE_KEY, PictureBoxSizeMode.CenterImage.ToString()));
+
+            pictureBox.BackColor = Color.FromArgb(30,30,30);
+
             this.KeyPreview = true;
 
             this.Shown += this.Form1_Shown;
@@ -62,16 +70,24 @@ namespace UsbCam
             this.MnuCamera.DropDownOpening += (sender, e) => AddCameraListToMenu(VideoSource);
             this.MnuCamera.DropDownItemClicked += (sender, e) => StartCamera($"{e.ClickedItem.Tag}");
 
-            this.ConCircleDiameter.KeyDown += this.ConCircleDiameter_KeyDown;
+            this.ConCircleDiameter.ValueChanged += (sender, e) => CircleDiameter = (int)ConCircleDiameter.Value;
+            this.ConCircleDiameter.KeyDown += (sender, e) => { if (e.KeyCode == Keys.Escape) ConCircleDiameter.Value = 0; };
 
-            this.ConAngle.Scroll += this.ConAngle_Scroll;
+            this.ConAngle.ValueChanged += this.ConAngle_ValueChanged;
             this.ConAngle.KeyDown += this.ConAngle_KeyDown;
+
+            this.ButSetMark.Click += (sender, e) => 
+            {
+                AngleMark = Angle;
+
+                ShowLabAngle();
+            };
 
             this.FormClosing += this.Form1_FormClosing;
             this.Load += (sender, e) => this.Bounds = UserAppRegistryKey.GetData(this.Name, this.Bounds);
             this.KeyDown += this.Form1_KeyDown;
 
-            this.MnuCopyImage.Click += (sender, e) => CopyImage();
+            this.ButImageCopy.Click += (sender, e) => CopyImage();
 
             SetAlwaysOnTop(UserAppRegistryKey.GetData(ALWAYS_ON_TOP_KEY, false));
         }
@@ -79,6 +95,29 @@ namespace UsbCam
         #region Helpers
 
         private RegistryKey UserAppRegistryKey => Assembly.GetEntryAssembly().GetUserAppRegistryKey();
+
+        private void SetSizeMode(string sizeModeString)
+        {
+            if (Enum.TryParse(sizeModeString, out PictureBoxSizeMode sizeMode))
+            {
+                SetSizeMode(sizeMode);
+            }
+            else
+            {
+                SetSizeMode(PictureBoxSizeMode.CenterImage);
+            }
+        }
+
+        private void SetSizeMode(PictureBoxSizeMode sizeMode)
+        {
+            pictureBox.SizeMode = sizeMode;
+
+            UserAppRegistryKey.SetData(SIZE_MODE_KEY, sizeMode.ToString());
+
+            MnuNormal.Checked = sizeMode.Equals(MnuNormal.Tag);
+            MnuCenter.Checked = sizeMode.Equals(MnuCenter.Tag);
+            MnuZoom.Checked = sizeMode.Equals(MnuZoom.Tag);
+        }
 
         /// <summary>
         /// Aktuaizace menu se seznamem kamer.
@@ -145,15 +184,7 @@ namespace UsbCam
         private void ShowLabAngle()
         {
             var angle = Math.Abs(Angle - AngleMark);
-            LabAngle.Text = $"Angle {AngleMark}° - {Angle}° = {angle}° ({360-angle}°)";
-        }
-
-        /// <summary>
-        /// Zobrazení kružnice do labelu
-        /// </summary>
-        private void ShowLabCircle()
-        {
-            LabCircleDiameter.Text = $"Circle {CircleDiameter}";
+            LabAngle.Text = $"{AngleMark}° - {Angle}° = {angle}° / {360-angle}°";
         }
 
         private void DrawEtc(Bitmap bitmap)
@@ -178,7 +209,7 @@ namespace UsbCam
                     DrawAngleLine(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleMarkPen, AngleMark, centerX, centerY, width * 2);
                 }
                 
-                DrawArc(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleArcPen, Angle, AngleMark, centerX, centerY, 100);
+                DrawArc(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleArcPen, Angle, AngleMark, centerX, centerY, 78);
             }
         }
 
@@ -311,12 +342,38 @@ namespace UsbCam
             {
                 MessageBox.Show(ex.InnerMessages(), "Copy Image to Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
 
         #endregion
 
         #region GUI response
+
+        /// <summary>
+        /// Obsluha změny úhlu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ConAngle_ValueChanged(object sender, EventArgs e)
+        {
+            var temp = (int)ConAngle.Value;
+
+            if (temp < 0)
+            {
+                ConAngle.Value = 359;
+                this.Angle = 359;
+            }
+            else if (temp >= 360)
+            {
+                ConAngle.Value = 0;
+                this.Angle = 0;
+            }
+            else
+            {
+                this.Angle = temp;
+            }
+
+            ShowLabAngle();
+        }
 
         /// <summary>
         /// Enter nastaví značku úhlu
@@ -344,27 +401,6 @@ namespace UsbCam
             }
         }
 
-        /// <summary>
-        /// Zajištění cyklického procházení
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ConAngle_Scroll(object sender, EventArgs e)
-        {
-            if (ConAngle.Value == ConAngle.Maximum)
-            {
-                ConAngle.Value = 0;
-
-                return;
-            }
-
-            if (ConAngle.Value == ConAngle.Minimum)
-            {
-                ConAngle.Value = 359;
-
-                return;
-            }
-        }
 
         /// <summary>
         /// Po startu aplikace je focus na úhlu
@@ -392,38 +428,6 @@ namespace UsbCam
         }
 
         /// <summary>
-        /// Obsluha změny úhlu
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ConAngle_ValueChanged(object sender, EventArgs e)
-        {
-            Angle = ConAngle.Value;
-
-            ShowLabAngle();
-        }
-
-        /// <summary>
-        /// Obsluha změny kružnice
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ConCircleDiameter_ValueChanged(object sender, EventArgs e)
-        {
-            CircleDiameter = ConCircleDiameter.Value;
-
-            ShowLabCircle();
-        }
-
-        private void ConCircleDiameter_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                ConCircleDiameter.Value = 0;
-            }
-        }
-
-        /// <summary>
         /// Akce při každém snímku
         /// </summary>
         /// <param name="sender"></param>
@@ -435,6 +439,7 @@ namespace UsbCam
             DrawEtc(bitmap); //domalujeme pár věcí do výstupu
 
             pictureBox.Image = bitmap; //Zobrazíme v Pictureboxu
+
         }
 
         /// <summary>
@@ -450,7 +455,10 @@ namespace UsbCam
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            SetPenSet(e.KeyCode);
+            if (e.Control)
+            {
+                SetPenSet(e.KeyCode);
+            }
         }
 
         private void MnuExit_Click(object sender, EventArgs e) => this.Close();
@@ -470,8 +478,10 @@ namespace UsbCam
         /// <param name="e"></param>
         private void MnuAbout_Click(object sender, EventArgs e)
         {
-            var dialog = new AboutBox1();
-            dialog.TopMost = this.TopMost;
+            var dialog = new AboutBox1
+            {
+                TopMost = this.TopMost
+            };
 
             dialog.ShowDialog();
         }

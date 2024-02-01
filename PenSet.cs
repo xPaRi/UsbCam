@@ -59,14 +59,16 @@ namespace UsbCam
         public void DefaultInit()
         {
             Add(GetDefault());
-            Add(GetAsMonoColor(Color.Transparent, "0", System.Windows.Forms.Keys.NumPad0));
-            Add(GetAsMonoColor(Color.Blue, "1", System.Windows.Forms.Keys.NumPad1));
-            Add(GetAsMonoColor(Color.Black, "2", System.Windows.Forms.Keys.NumPad2));
-            Add(GetAsMonoColor(Color.White, "3", System.Windows.Forms.Keys.NumPad3));
-            Add(GetAsMonoColor(Color.Magenta, "4", System.Windows.Forms.Keys.NumPad4));
-            Add(GetAsMonoColor(Color.Cyan, "5", System.Windows.Forms.Keys.NumPad5));
-            Add(GetAsMonoColor(Color.Red, "6", System.Windows.Forms.Keys.NumPad6));
-            Add(GetAsMonoColor(Color.Orange, "7", System.Windows.Forms.Keys.NumPad7));
+            Add(GetAsMonoColor(Color.Transparent, Color.Transparent, "0", System.Windows.Forms.Keys.NumPad0));
+            Add(GetAsMonoColor(Color.White, Color.Transparent, "1", System.Windows.Forms.Keys.NumPad1));
+            Add(GetAsMonoColor(Color.Black, Color.Transparent, "2", System.Windows.Forms.Keys.NumPad2));
+            Add(GetAsMonoColor(Color.Magenta, Color.Transparent, "3", System.Windows.Forms.Keys.NumPad3));
+            Add(GetAsMonoColor(Color.Yellow, Color.Transparent, "4", System.Windows.Forms.Keys.NumPad4));
+            Add(GetAsMonoColor(Color.Orange, Color.Transparent, "5", System.Windows.Forms.Keys.NumPad5));
+            Add(GetAsMonoColor(Color.Red, Color.Transparent, "6", System.Windows.Forms.Keys.NumPad6));
+            Add(GetAsMonoColor(Color.Cyan, Color.Transparent, "7", System.Windows.Forms.Keys.NumPad7));
+            Add(GetAsMonoColor(Color.DarkCyan, Color.Transparent, "8", System.Windows.Forms.Keys.NumPad8));
+            Add(GetAsMonoColor(Color.Blue, Color.Transparent, "9", System.Windows.Forms.Keys.NumPad9));
         }
 
         private static PenSet GetDefault()
@@ -93,8 +95,12 @@ namespace UsbCam
         }
         
         
-        private static PenSet GetAsMonoColor(Color color, string namePrefix, Keys keyCode)
+        private static PenSet GetAsMonoColor(Color color, Color background, string namePrefix, Keys keyCode)
         {
+            float[] crossPenDashPattern = { 10, 10 };
+            float[] angleSlavePenDashPattern = { 1, 5 };
+            float[] angleMarkPenDashPattern = { 30, 5 };
+
             var prefix = (string.IsNullOrEmpty(namePrefix) ? string.Empty : $"{namePrefix}. ");
 
             return new PenSet()
@@ -102,13 +108,17 @@ namespace UsbCam
                 Key = color.Name,
                 KeyCode = keyCode,
                 Name = $"{prefix}{color.Name}",
-                CrossPen = new Pen(color, 1),
+                
+                CrossPen = new Pen(color, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Custom, DashPattern = crossPenDashPattern, DashOffset = 5 },
+                
                 CirclePen = new Pen(color, 1),
-                AngleSlavePen = new Pen(color, 1),
+                
                 AngleMasterPen = new Pen(color, 1),
-                AngleMarkPen = new Pen(color, 1),
-                AngleArcPen = new Pen(color, 2),
-                PenBg = new Pen(color, 1)
+                AngleSlavePen = new Pen(color, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Custom, DashPattern = angleSlavePenDashPattern, DashOffset = 5 },
+                AngleArcPen = new Pen(color, 3),
+                AngleMarkPen = new Pen(color, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Custom, DashPattern = angleMarkPenDashPattern, DashOffset = 5 },
+                
+                PenBg = new Pen(background, 1)
             };
         }
 

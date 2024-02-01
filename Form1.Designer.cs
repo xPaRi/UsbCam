@@ -28,26 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.MenuCameraList = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.dummyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LabCircleDiameter = new System.Windows.Forms.Label();
             this.LabAngle = new System.Windows.Forms.Label();
             this.ConCircleDiameter = new System.Windows.Forms.TrackBar();
             this.ConAngle = new System.Windows.Forms.TrackBar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MnuCamera = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuCopyImage = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            this.MenuCameraList.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
             // 
-            this.pictureBox.ContextMenuStrip = this.MenuCameraList;
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox.Location = new System.Drawing.Point(0, 0);
             this.pictureBox.Name = "pictureBox";
@@ -56,19 +61,6 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             this.pictureBox.WaitOnLoad = true;
-            // 
-            // MenuCameraList
-            // 
-            this.MenuCameraList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dummyToolStripMenuItem});
-            this.MenuCameraList.Name = "contextMenuStrip1";
-            this.MenuCameraList.Size = new System.Drawing.Size(117, 26);
-            // 
-            // dummyToolStripMenuItem
-            // 
-            this.dummyToolStripMenuItem.Name = "dummyToolStripMenuItem";
-            this.dummyToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.dummyToolStripMenuItem.Text = "dummy";
             // 
             // panel1
             // 
@@ -128,24 +120,98 @@
             this.ConAngle.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.ConAngle.ValueChanged += new System.EventHandler(this.ConAngle_ValueChanged);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuCamera,
+            this.MnuSettings,
+            this.MnuCopyImage,
+            this.MnuAbout});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(733, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "MnuMain";
+            // 
+            // MnuCamera
+            // 
+            this.MnuCamera.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator1,
+            this.MnuExit});
+            this.MnuCamera.Name = "MnuCamera";
+            this.MnuCamera.Size = new System.Drawing.Size(60, 20);
+            this.MnuCamera.Text = "Camera";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
+            // 
+            // MnuExit
+            // 
+            this.MnuExit.Name = "MnuExit";
+            this.MnuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.MnuExit.Size = new System.Drawing.Size(135, 22);
+            this.MnuExit.Text = "&Exit";
+            this.MnuExit.Click += new System.EventHandler(this.MnuExit_Click);
+            // 
+            // MnuSettings
+            // 
+            this.MnuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator2,
+            this.MnuAlwaysOnTop});
+            this.MnuSettings.Name = "MnuSettings";
+            this.MnuSettings.Size = new System.Drawing.Size(61, 20);
+            this.MnuSettings.Text = "Settings";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuAlwaysOnTop
+            // 
+            this.MnuAlwaysOnTop.Name = "MnuAlwaysOnTop";
+            this.MnuAlwaysOnTop.Size = new System.Drawing.Size(180, 22);
+            this.MnuAlwaysOnTop.Text = "Always on Top";
+            this.MnuAlwaysOnTop.Click += new System.EventHandler(this.MnuAlwaysOnTop_Click);
+            // 
+            // MnuAbout
+            // 
+            this.MnuAbout.Name = "MnuAbout";
+            this.MnuAbout.Size = new System.Drawing.Size(52, 20);
+            this.MnuAbout.Text = "About";
+            this.MnuAbout.Click += new System.EventHandler(this.MnuAbout_Click);
+            // 
+            // MnuCopyImage
+            // 
+            this.MnuCopyImage.Name = "MnuCopyImage";
+            this.MnuCopyImage.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Space)));
+            this.MnuCopyImage.Size = new System.Drawing.Size(47, 20);
+            this.MnuCopyImage.Text = "Copy";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(733, 536);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UsbCam";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            this.MenuCameraList.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -157,8 +223,15 @@
         private System.Windows.Forms.Label LabAngle;
         private System.Windows.Forms.TrackBar ConCircleDiameter;
         private System.Windows.Forms.TrackBar ConAngle;
-        private System.Windows.Forms.ContextMenuStrip MenuCameraList;
-        private System.Windows.Forms.ToolStripMenuItem dummyToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem MnuCamera;
+        private System.Windows.Forms.ToolStripMenuItem MnuSettings;
+        private System.Windows.Forms.ToolStripMenuItem MnuAbout;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem MnuExit;
+        private System.Windows.Forms.ToolStripMenuItem MnuAlwaysOnTop;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem MnuCopyImage;
     }
 }
 

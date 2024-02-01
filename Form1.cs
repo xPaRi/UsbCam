@@ -16,12 +16,17 @@ using System.Windows.Forms.Design;
 using IDEA.UniLib.Extensions;
 using System.Reflection;
 using Microsoft.Win32;
+using System.Runtime.Remoting.Channels;
 
 
 namespace UsbCam
 {
     public partial class Form1 : Form
     {
+        private const string DEVICE_KEY = "Device";
+        private const string ALWAYS_ON_TOP_KEY = "AlwaysOnTop";
+        private const string PEN_SET_KEY = "PenSet";
+
         private int Angle = 0;
         private int AngleMark = 0;
 
@@ -29,31 +34,33 @@ namespace UsbCam
 
         private VideoCaptureDevice VideoSource;
 
-        private Pen CrossPen = null;
-        private Pen CirclePen = null;
-        private Pen AngleMasterPen = null;
-        private Pen AngleSlavePen = null;
-        private Pen AngleMarkPen = null;
+        private PenSetDict PenSetDict = new PenSetDict();
+        private PenSet CurrentPenSet = null; 
 
         public Form1()
         {
             InitializeComponent();
 
-            CrossPen = new Pen(Color.White, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash};
-            CirclePen = new Pen(Color.Yellow, 1);
-            AngleMasterPen = new Pen(Color.Yellow, 1);
-            AngleSlavePen = new Pen(Color.Gray, 1);
-            AngleMarkPen = new Pen(Color.Yellow, 1);
+            var assembly = Assembly.GetEntryAssembly();
+
+            this.Text = $"{assembly.GetTitle()} ({assembly.GetVersion()})";
+
+            PenSetDict.DefaultInit();
+            ShowPenSetDictToMenu();
+            SetPenSet(UserAppRegistryKey.GetData(PEN_SET_KEY, ""));
 
             ConCircleDiameter.Value = CircleDiameter;
             ConAngle.Value = Angle;
 
             pictureBox.BackColor = Color.Gray;
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            
+            this.KeyPreview = true;
 
             this.Shown += this.Form1_Shown;
-            this.MenuCameraList.Opened += this.MenuCameraList_Opened;
-            this.MenuCameraList.ItemClicked += this.MenuCameraList_ItemClicked;
+
+            this.MnuCamera.DropDownOpening += (sender, e) => AddCameraListToMenu(VideoSource);
+            this.MnuCamera.DropDownItemClicked += (sender, e) => StartCamera($"{e.ClickedItem.Tag}");
 
             this.ConCircleDiameter.KeyDown += this.ConCircleDiameter_KeyDown;
 
@@ -62,6 +69,11 @@ namespace UsbCam
 
             this.FormClosing += this.Form1_FormClosing;
             this.Load += (sender, e) => this.Bounds = UserAppRegistryKey.GetData(this.Name, this.Bounds);
+            this.KeyDown += this.Form1_KeyDown;
+
+            this.MnuCopyImage.Click += (sender, e) => CopyImage();
+
+            SetAlwaysOnTop(UserAppRegistryKey.GetData(ALWAYS_ON_TOP_KEY, false));
         }
 
         #region Helpers
@@ -73,24 +85,23 @@ namespace UsbCam
         /// </summary>
         private void AddCameraListToMenu(VideoCaptureDevice videoSource)
         {
-            MenuCameraList.Items.Clear();
+            var currentMoniker = videoSource?.Source;
 
-            string currentMoniker = videoSource?.Source;
+            var toDelete = MnuCamera.DropDownItems.Cast<ToolStripItem>().Where(it => it.Tag != null).ToList();
 
-            MenuCameraList.Items.AddRange(
-                new FilterInfoCollection(FilterCategory.VideoInputDevice).Cast<FilterInfo>().Select(camera =>
-                    new ToolStripMenuItem
-                    {
-                        Text = camera.Name,
-                        Checked = camera.MonikerString.Equals(currentMoniker),
-                        Tag = camera.MonikerString
-                    }
-                ).ToArray());
+            toDelete.ForEach(it => MnuCamera.DropDownItems.Remove(it));
 
-
-            if (MenuCameraList.Items.Count == 0)
+            foreach (var camera in new FilterInfoCollection(FilterCategory.VideoInputDevice).Cast<FilterInfo>().OrderByDescending(it=>it.Name))
             {
-                MenuCameraList.Items.Add("-");
+                var menuItem = new ToolStripMenuItem()
+                {
+                    Text = camera.Name,
+                    Checked = camera.MonikerString.Equals(currentMoniker),
+                    Tag = camera.MonikerString,
+                    
+                };
+
+                MnuCamera.DropDownItems.Insert(0, menuItem);
             }
         }
 
@@ -100,9 +111,17 @@ namespace UsbCam
         /// <param name="monikerString"></param>
         private void StartCamera(string monikerString)
         {
+            //Nemáme identifikátor kamery
+            if (string.IsNullOrEmpty(monikerString))
+                return;
+
+            StopCamera();
+
             VideoSource = new VideoCaptureDevice(monikerString);
             VideoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
             VideoSource.Start();
+
+            UserAppRegistryKey.SetData(DEVICE_KEY, monikerString);
         }
 
         /// <summary>
@@ -112,6 +131,8 @@ namespace UsbCam
         {
             if (VideoSource != null && VideoSource.IsRunning)
             {
+                VideoSource.NewFrame -= new NewFrameEventHandler(VideoSource_NewFrame);
+
                 VideoSource.SignalToStop();
                 VideoSource.WaitForStop();
                 VideoSource = null;
@@ -144,39 +165,29 @@ namespace UsbCam
 
             using (var graphics = Graphics.FromImage(bitmap))
             {
-                DrawCross(graphics, CrossPen, centerX, centerY, width, height);
-                DrawCircle(graphics, CirclePen, centerX, centerY, 2 * CircleDiameter);
-                DrawAngleCross(graphics, AngleMasterPen, AngleSlavePen, Angle, centerX, centerY, width * 2);
+                DrawAngleCross(graphics, CurrentPenSet.PenBg, CurrentPenSet.CrossPen, CurrentPenSet.CrossPen, 0, centerX, centerY, width * 2);
+                DrawCircle(graphics, CurrentPenSet.CirclePen, centerX, centerY, 2 * CircleDiameter);
+                
+                if (Angle > 0)
+                {
+                    DrawAngleCross(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleMasterPen, CurrentPenSet.AngleSlavePen, Angle, centerX, centerY, width * 2);
+                }
 
                 if (AngleMark > 0)
                 {
-                    DrawAngleLine(graphics, AngleMarkPen, AngleMark, centerX, centerY, width * 2);
+                    DrawAngleLine(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleMarkPen, AngleMark, centerX, centerY, width * 2);
                 }
                 
-                DrawArc(graphics, AngleMasterPen, Angle, AngleMark, centerX, centerY, 100);
+                DrawArc(graphics, CurrentPenSet.PenBg, CurrentPenSet.AngleArcPen, Angle, AngleMark, centerX, centerY, 100);
             }
         }
 
-        private static void DrawArc(Graphics g, Pen pen, int startAngle, int endAngle, int x, int y, int size)
+        private static void DrawArc(Graphics g, Pen penBg, Pen pen, int startAngle, int endAngle, int x, int y, int size)
         {
             var arcRect = new Rectangle(x-size/2, y-size/2, size, size);
 
+            g.DrawArc(penBg, arcRect, 360 - startAngle, startAngle - endAngle);
             g.DrawArc(pen, arcRect, 360 - startAngle, startAngle - endAngle);
-        }
-
-        /// <summary>
-        /// Vykreslí kříž
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="pen"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        private static void DrawCross(Graphics g, Pen pen, int x, int y, int width, int height)
-        {
-            g.DrawLine(pen, 0, y, width, y);
-            g.DrawLine(pen, x, 0, x, height);
         }
 
         /// <summary>
@@ -204,7 +215,7 @@ namespace UsbCam
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="length"></param>
-        private static void DrawAngleLine(Graphics g, Pen pen, int angle, int x, int y, int length)
+        private static void DrawAngleLine(Graphics g, Pen penBg, Pen pen, int angle, int x, int y, int length)
         {
             //--- Výpočet koncového bodu úsečky na základě úhlu a délky
             double angleInRadians = angle * Math.PI / 180; // převod úhlu z stupňů na radiány
@@ -213,6 +224,7 @@ namespace UsbCam
             int dy = (int)(length * Math.Sin(angleInRadians)); // výpočet y-ové souřadnice koncového bodu
             //---
 
+            g.DrawLine(penBg, x, y, x + dx, y - dy);
             g.DrawLine(pen, x, y, x + dx, y - dy);
         }
 
@@ -226,25 +238,80 @@ namespace UsbCam
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="width"></param>
-        private static void DrawAngleCross(Graphics g, Pen pen, Pen penSlave, int angle, int x, int y, int length)
+        private static void DrawAngleCross(Graphics g, Pen penBg, Pen pen, Pen penSlave, int angle, int x, int y, int length)
         {
-            //--- kreslíme úhel
-            if (angle > 0)
+            DrawAngleLine(g, penBg, pen, angle, x, y, length);
+            DrawAngleLine(g, penBg, penSlave, angle + 90, x, y, length);
+            DrawAngleLine(g, penBg, penSlave, angle + 180, x, y, length);
+            DrawAngleLine(g, penBg, penSlave, angle + 270, x, y, length);
+        }
+
+        private void ShowPenSetDictToMenu()
+        {
+            foreach (var item in PenSetDict.Values.OrderByDescending(it => it.Name))
             {
-                //--- Výpočet koncového bodu úsečky na základě úhlu a délky
-                double angleInRadians = angle * Math.PI / 180; // převod úhlu z stupňů na radiány
+                var menuItem = new ToolStripMenuItem()
+                {
+                    Text = item.Name,
+                    Tag = item
+                };
 
-                int dx = (int)(length * Math.Cos(angleInRadians)); // výpočet x-ové souřadnice koncového bodu
-                int dy = (int)(length * Math.Sin(angleInRadians)); // výpočet y-ové souřadnice koncového bodu
-                //---
+                MnuSettings.DropDownItems.Insert(0, menuItem);
 
-                g.DrawLine(pen, x, y, x + dx, y - dy);
-
-                g.DrawLine(penSlave, x, y, x - dx, y + dy);
-                g.DrawLine(penSlave, x, y, x + dy, y + dx);
-                g.DrawLine(penSlave, x, y, x - dy, y - dx);
+                menuItem.Click += (sender, e) => SetPenSet(item.Key);
             }
-            //---
+        }
+
+        private void SetPenSet(Keys KeyCode)
+        {
+            var penSet = PenSetDict.GetSet(KeyCode);
+
+            if (penSet == null)
+                return;
+
+            SetPenSet(PenSetDict.GetSet(KeyCode));
+        }
+
+        private void SetPenSet(string key)
+        {
+            SetPenSet(PenSetDict.GetSet(key));
+        }
+
+        private void SetPenSet(PenSet penSet)
+        {
+            CurrentPenSet = penSet;
+
+            UserAppRegistryKey.SetData(PEN_SET_KEY, CurrentPenSet.Key);
+            MnuSettings.DropDownItems.Cast<ToolStripItem>().Where(it => it.Tag is PenSet).Select(it => it as ToolStripMenuItem).ToList().ForEach(it => it.Checked = it.Tag == CurrentPenSet);
+        }
+
+
+        /// <summary>
+        /// Nastaví Always on Top
+        /// </summary>
+        /// <param name="alwaysOnTop"></param>
+        private void SetAlwaysOnTop(bool alwaysOnTop)
+        {
+            this.TopMost = alwaysOnTop;
+            MnuAlwaysOnTop.Checked = alwaysOnTop;
+
+            UserAppRegistryKey.SetData(ALWAYS_ON_TOP_KEY, alwaysOnTop);
+        }
+
+        /// <summary>
+        /// Kopie obrázku do clipboardu
+        /// </summary>
+        private void CopyImage()
+        {
+            try
+            {
+                Clipboard.SetImage(pictureBox.Image);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerMessages(), "Copy Image to Clipboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         #endregion
@@ -266,8 +333,13 @@ namespace UsbCam
                     ShowLabAngle();
                     break;
                 case Keys.Escape:
+                    if (AngleMark == 0)
+                    { 
+                        ConAngle.Value = 0;
+                    }
+
                     AngleMark = 0;
-                    ConAngle.Value = 0;
+                        
                     break;
             }
         }
@@ -295,34 +367,16 @@ namespace UsbCam
         }
 
         /// <summary>
-        /// Otevře se menu s kamerami
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuCameraList_Opened(object sender, EventArgs e)
-        {
-            AddCameraListToMenu(VideoSource);
-        }
-
-        /// <summary>
-        /// Obsluha vybere kameru
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuCameraList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            StopCamera();
-            StartCamera(e.ClickedItem.Tag.ToString());
-        }
-
-        /// <summary>
         /// Po startu aplikace je focus na úhlu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_Shown(object sender, EventArgs e)
         {
-            MenuCameraList.Show(pictureBox, 10, 10);
+            var device = UserAppRegistryKey.GetData(DEVICE_KEY, string.Empty);
+            
+            StartCamera(device);
+
             ConAngle.Focus();
         }
 
@@ -335,12 +389,6 @@ namespace UsbCam
             base.OnClosed(e); // Uvolnění prostředků při zavření okna
 
             StopCamera();
-
-            CrossPen.Dispose();
-            CirclePen.Dispose();
-            AngleMasterPen.Dispose();
-            AngleSlavePen.Dispose();
-            AngleMarkPen.Dispose();
         }
 
         /// <summary>
@@ -400,7 +448,34 @@ namespace UsbCam
             UserAppRegistryKey.SetData(this.Name, (this.WindowState == FormWindowState.Normal) ? this.Bounds : this.RestoreBounds);
         }
 
-        #endregion
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            SetPenSet(e.KeyCode);
+        }
 
+        private void MnuExit_Click(object sender, EventArgs e) => this.Close();
+
+
+        /// <summary>
+        /// Nastaví formulář na 'Vždy navrchu'
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MnuAlwaysOnTop_Click(object sender, EventArgs e) => SetAlwaysOnTop(!MnuAlwaysOnTop.Checked);
+
+        /// <summary>
+        /// Zobrazí informace o aplikaci.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MnuAbout_Click(object sender, EventArgs e)
+        {
+            var dialog = new AboutBox1();
+            dialog.TopMost = this.TopMost;
+
+            dialog.ShowDialog();
+        }
+
+        #endregion
     }
 }

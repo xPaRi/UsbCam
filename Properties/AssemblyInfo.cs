@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("UsbCam")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Image transfer from a USB camera for the needs of the XYCordReader application.")]
 [assembly: AssemblyConfiguration("UsbCam")]
 [assembly: AssemblyCompany("PaRi")]
 [assembly: AssemblyProduct("UsbCam")]

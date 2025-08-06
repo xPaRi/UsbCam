@@ -24,10 +24,17 @@ namespace UsbCam
 {
     public partial class Form1 : Form
     {
+
+        #region Values
+
         private const string DEVICE_KEY = "Device";
         private const string ALWAYS_ON_TOP_KEY = "AlwaysOnTop";
         private const string PEN_SET_KEY = "PenSet";
         private const string SIZE_MODE_KEY = "SizeMode";
+
+        private const string PERIODICAL_TARGET_INTERVAL_KEY = "PeriodicalTargetInterval";
+        private const string PERIODICAL_TARGET_KEY = "PeriodicalTarget";
+        private const string FILE_TARGET_KEY = "FileTarget";
 
         private int Angle = 0;
         private int AngleMark = 0;
@@ -37,7 +44,42 @@ namespace UsbCam
         private VideoCaptureDevice VideoSource;
 
         private PenSetDict PenSetDict = new PenSetDict();
-        private PenSet CurrentPenSet = null; 
+        private PenSet CurrentPenSet = null;
+
+        /// <summary>
+        /// Cíl pro periodické snímání.
+        /// </summary>
+        public string PeriodicalTarget
+        {
+            get => _PeriodicalTarget;
+            set => _PeriodicalTarget = value;
+        }
+
+        private string _PeriodicalTarget = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        /// <summary>
+        /// Interval periodického snímání [sec]
+        /// </summary>
+        public int PeriodicalTargetInterval
+        {
+            get => _PeriodicalTargetInterval;
+            set => _PeriodicalTargetInterval = value;
+        }
+
+        int _PeriodicalTargetInterval = 10;
+
+        /// <summary>
+        /// Cíl pro periodické snímání.
+        /// </summary>
+        public string FileTarget
+        {
+            get => _FileTarget;
+            set => _FileTarget = value;
+        }
+
+        private string _FileTarget = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        #endregion
 
         public Form1()
         {
@@ -90,6 +132,10 @@ namespace UsbCam
             this.ButImageCopy.Click += (sender, e) => CopyImage();
 
             SetAlwaysOnTop(UserAppRegistryKey.GetData(ALWAYS_ON_TOP_KEY, false));
+
+            PeriodicalTarget = UserAppRegistryKey.GetData(PERIODICAL_TARGET_KEY, PeriodicalTarget);
+            PeriodicalTargetInterval = UserAppRegistryKey.GetData(PERIODICAL_TARGET_INTERVAL_KEY, PeriodicalTargetInterval);
+            FileTarget = UserAppRegistryKey.GetData(FILE_TARGET_KEY, FileTarget);
         }
 
         #region Helpers
@@ -486,6 +532,24 @@ namespace UsbCam
             dialog.ShowDialog();
         }
 
+        /// <summary>
+        /// Dialog pro nastavení cíle snímání.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MnuTargetSettings_Click(object sender, EventArgs e)
+        {
+            var dialog = new FrmTargetSettings()
+            {
+                Owner = this,
+                TopMost = this.TopMost, //Pokud by byl dialog TopMost, překryl by Settings...
+                StartPosition = FormStartPosition.CenterParent
+            };
+
+            dialog.ShowDialog();
+        }
+
         #endregion
+
     }
 }

@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ButSetMark = new System.Windows.Forms.Button();
             this.ConAngle = new System.Windows.Forms.NumericUpDown();
@@ -50,29 +49,25 @@
             this.MnuZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuTargetSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.ButImageCopy = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.ButTakePeriodical = new System.Windows.Forms.Button();
+            this.ButImageSave = new System.Windows.Forms.Button();
+            this.ButImageCopy = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox
-            // 
-            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox.Location = new System.Drawing.Point(0, 74);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(733, 462);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox.TabIndex = 0;
-            this.pictureBox.TabStop = false;
-            this.pictureBox.WaitOnLoad = true;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ButTakePeriodical);
+            this.panel1.Controls.Add(this.ButImageSave);
             this.panel1.Controls.Add(this.ButImageCopy);
             this.panel1.Controls.Add(this.ButSetMark);
             this.panel1.Controls.Add(this.ConAngle);
@@ -186,13 +181,13 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
             // 
             // MnuExit
             // 
             this.MnuExit.Name = "MnuExit";
             this.MnuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.MnuExit.Size = new System.Drawing.Size(180, 22);
+            this.MnuExit.Size = new System.Drawing.Size(135, 22);
             this.MnuExit.Text = "&Exit";
             this.MnuExit.Click += new System.EventHandler(this.MnuExit_Click);
             // 
@@ -202,6 +197,8 @@
             this.toolStripSeparator3,
             this.MnuSizeMode,
             this.toolStripSeparator2,
+            this.MnuTargetSettings,
+            this.toolStripSeparator4,
             this.MnuAlwaysOnTop});
             this.MnuSettings.Name = "MnuSettings";
             this.MnuSettings.Size = new System.Drawing.Size(61, 20);
@@ -210,7 +207,7 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(147, 6);
             // 
             // MnuSizeMode
             // 
@@ -219,7 +216,7 @@
             this.MnuCenter,
             this.MnuZoom});
             this.MnuSizeMode.Name = "MnuSizeMode";
-            this.MnuSizeMode.Size = new System.Drawing.Size(180, 22);
+            this.MnuSizeMode.Size = new System.Drawing.Size(150, 22);
             this.MnuSizeMode.Text = "Size Mode";
             // 
             // MnuNormal
@@ -243,14 +240,21 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(147, 6);
             // 
             // MnuAlwaysOnTop
             // 
             this.MnuAlwaysOnTop.Name = "MnuAlwaysOnTop";
-            this.MnuAlwaysOnTop.Size = new System.Drawing.Size(180, 22);
+            this.MnuAlwaysOnTop.Size = new System.Drawing.Size(150, 22);
             this.MnuAlwaysOnTop.Text = "Always on Top";
             this.MnuAlwaysOnTop.Click += new System.EventHandler(this.MnuAlwaysOnTop_Click);
+            // 
+            // MnuTargetSettings
+            // 
+            this.MnuTargetSettings.Name = "MnuTargetSettings";
+            this.MnuTargetSettings.Size = new System.Drawing.Size(150, 22);
+            this.MnuTargetSettings.Text = "Targets…";
+            this.MnuTargetSettings.Click += new System.EventHandler(this.MnuTargetSettings_Click);
             // 
             // MnuAbout
             // 
@@ -258,6 +262,44 @@
             this.MnuAbout.Size = new System.Drawing.Size(52, 20);
             this.MnuAbout.Text = "&About";
             this.MnuAbout.Click += new System.EventHandler(this.MnuAbout_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Location = new System.Drawing.Point(0, 74);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(733, 462);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.WaitOnLoad = true;
+            // 
+            // ButTakePeriodical
+            // 
+            this.ButTakePeriodical.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButTakePeriodical.Image = global::UsbCam.Properties.Resources.video;
+            this.ButTakePeriodical.Location = new System.Drawing.Point(606, 4);
+            this.ButTakePeriodical.Name = "ButTakePeriodical";
+            this.ButTakePeriodical.Size = new System.Drawing.Size(41, 42);
+            this.ButTakePeriodical.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.ButTakePeriodical, "Periodical take a picture to the file\r\n(see Settings).");
+            this.ButTakePeriodical.UseVisualStyleBackColor = false;
+            // 
+            // ButImageSave
+            // 
+            this.ButImageSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButImageSave.Image = global::UsbCam.Properties.Resources.file;
+            this.ButImageSave.Location = new System.Drawing.Point(647, 4);
+            this.ButImageSave.Name = "ButImageSave";
+            this.ButImageSave.Size = new System.Drawing.Size(41, 42);
+            this.ButImageSave.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ButImageSave, "Take a picture to the file\r\n(see Settings).");
+            this.ButImageSave.UseVisualStyleBackColor = true;
             // 
             // ButImageCopy
             // 
@@ -283,13 +325,13 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UsbCam";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -320,6 +362,10 @@
         private System.Windows.Forms.ToolStripMenuItem MnuZoom;
         private System.Windows.Forms.Button ButImageCopy;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem MnuTargetSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.Button ButTakePeriodical;
+        private System.Windows.Forms.Button ButImageSave;
     }
 }
 

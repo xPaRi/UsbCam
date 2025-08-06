@@ -29,7 +29,8 @@ C:\dev\PARI\UsbCam\obj\Debug\UsbCam.Form1.resources
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.Properties.Resources.resources
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.csproj.GenerateResource.cache
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.csproj.CoreCompileInputs.cache
-C:\dev\PARI\UsbCam\obj\Debug\UsbCam.csproj.CopyComplete
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.exe
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.pdb
 C:\dev\PARI\UsbCam\obj\Debug\UsbCam.AboutBox1.resources
+C:\dev\PARI\UsbCam\obj\Debug\UsbCam.csproj.Up2Date
+C:\dev\PARI\UsbCam\obj\Debug\UsbCam.FrmTargetSettings.resources

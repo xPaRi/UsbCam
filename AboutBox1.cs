@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
+using System;
+using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using IDEA.UniLib.Extensions;
 
 namespace UsbCam
 {
@@ -14,97 +11,38 @@ namespace UsbCam
         public AboutBox1()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
 
-            linkLabel1.LinkClicked += (sender, e) => 
-            { 
-                System.Diagnostics.Process.Start(linkLabel1.Text); 
+            var assembly = Assembly.GetExecutingAssembly();
+
+            this.Text = $"About {AssemblyTitle}";
+            this.labelProductName.Text = assembly.GetProduct();
+            this.labelVersion.Text = $"Version {assembly.GetVersion()}";
+            this.labelCopyright.Text = assembly.GetCopyright();
+            this.labelCompanyName.Text = assembly.GetCompany();
+            this.textBoxDescription.Text = assembly.GetDescription();
+
+            linkLabel1.LinkClicked += (sender, e) =>
+            {
+                try
+                {
+                    //V .NET (Core) je pro otevření URL nutné UseShellExecute.
+                    Process.Start(new ProcessStartInfo(linkLabel1.Text) { UseShellExecute = true });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, ex.InnerMessages(), Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             };
         }
-
-        #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
             get
             {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
-                    {
-                        return titleAttribute.Title;
-                    }
-                }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
-            }
-        }
+                var title = Assembly.GetExecutingAssembly().GetTitle();
 
-        public string AssemblyVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return string.IsNullOrEmpty(title) ? Assembly.GetExecutingAssembly().GetShortName() : title;
             }
         }
-
-        public string AssemblyDescription
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-            }
-        }
-
-        public string AssemblyProduct
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyProductAttribute)attributes[0]).Product;
-            }
-        }
-
-        public string AssemblyCopyright
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-            }
-        }
-
-        public string AssemblyCompany
-        {
-            get
-            {
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
-            }
-        }
-        #endregion
     }
 }

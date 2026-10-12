@@ -33,14 +33,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.TxtFileTarget = new System.Windows.Forms.TextBox();
+            this.TxtPeriodicalTarget = new System.Windows.Forms.TextBox();
+            this.ButBrowseFileTarget = new System.Windows.Forms.Button();
+            this.ConInterval = new System.Windows.Forms.NumericUpDown();
+            this.ButOk = new System.Windows.Forms.Button();
+            this.ButCancel = new System.Windows.Forms.Button();
+            this.ButBrowsePeriodicalTarget = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.ConInterval)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -79,85 +79,98 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "sec.";
             // 
-            // textBox1
+            // TxtFileTarget
             // 
-            this.textBox1.Location = new System.Drawing.Point(133, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(295, 20);
-            this.textBox1.TabIndex = 4;
+            this.TxtFileTarget.Location = new System.Drawing.Point(133, 12);
+            this.TxtFileTarget.Name = "TxtFileTarget";
+            this.TxtFileTarget.Size = new System.Drawing.Size(295, 20);
+            this.TxtFileTarget.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.TxtFileTarget.TabIndex = 4;
             // 
-            // textBox2
+            // TxtPeriodicalTarget
             // 
-            this.textBox2.Location = new System.Drawing.Point(133, 38);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(295, 20);
-            this.textBox2.TabIndex = 5;
+            this.TxtPeriodicalTarget.Location = new System.Drawing.Point(133, 38);
+            this.TxtPeriodicalTarget.Name = "TxtPeriodicalTarget";
+            this.TxtPeriodicalTarget.Size = new System.Drawing.Size(295, 20);
+            this.TxtPeriodicalTarget.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.TxtPeriodicalTarget.TabIndex = 5;
             // 
-            // button1
+            // ButBrowseFileTarget
             // 
-            this.button1.Location = new System.Drawing.Point(434, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(26, 20);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "…";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ButBrowseFileTarget.Location = new System.Drawing.Point(434, 12);
+            this.ButBrowseFileTarget.Name = "ButBrowseFileTarget";
+            this.ButBrowseFileTarget.Size = new System.Drawing.Size(26, 20);
+            this.ButBrowseFileTarget.TabIndex = 6;
+            this.ButBrowseFileTarget.Text = "…";
+            this.ButBrowseFileTarget.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown1
+            // ConInterval
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(133, 66);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown1.TabIndex = 8;
+            this.ConInterval.Location = new System.Drawing.Point(133, 66);
+            this.ConInterval.Name = "ConInterval";
+            this.ConInterval.Size = new System.Drawing.Size(54, 20);
+            this.ConInterval.Maximum = new decimal(new int[] { 86400, 0, 0, 0 });
+            this.ConInterval.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.ConInterval.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            this.ConInterval.TabIndex = 8;
             // 
-            // button3
+            // ButOk
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(304, 118);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 31);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "&OK";
-            this.button3.UseVisualStyleBackColor = true;
+            this.ButOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButOk.Location = new System.Drawing.Point(304, 118);
+            this.ButOk.Name = "ButOk";
+            this.ButOk.Size = new System.Drawing.Size(75, 31);
+            this.ButOk.TabIndex = 9;
+            this.ButOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.ButOk.Text = "&OK";
+            this.ButOk.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // ButCancel
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(385, 118);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 31);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "&Cancel";
-            this.button4.UseVisualStyleBackColor = true;
+            this.ButCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButCancel.Location = new System.Drawing.Point(385, 118);
+            this.ButCancel.Name = "ButCancel";
+            this.ButCancel.Size = new System.Drawing.Size(75, 31);
+            this.ButCancel.TabIndex = 10;
+            this.ButCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButCancel.Text = "&Cancel";
+            this.ButCancel.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // ButBrowsePeriodicalTarget
             // 
-            this.button2.Location = new System.Drawing.Point(434, 38);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(26, 20);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "…";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ButBrowsePeriodicalTarget.Location = new System.Drawing.Point(434, 38);
+            this.ButBrowsePeriodicalTarget.Name = "ButBrowsePeriodicalTarget";
+            this.ButBrowsePeriodicalTarget.Size = new System.Drawing.Size(26, 20);
+            this.ButBrowsePeriodicalTarget.TabIndex = 11;
+            this.ButBrowsePeriodicalTarget.Text = "…";
+            this.ButBrowsePeriodicalTarget.UseVisualStyleBackColor = true;
             // 
             // FrmTargetSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(469, 161);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.ButBrowsePeriodicalTarget);
+            this.Controls.Add(this.ButCancel);
+            this.Controls.Add(this.ButOk);
+            this.Controls.Add(this.ConInterval);
+            this.Controls.Add(this.ButBrowseFileTarget);
+            this.Controls.Add(this.TxtPeriodicalTarget);
+            this.Controls.Add(this.TxtFileTarget);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.AcceptButton = this.ButOk;
+            this.CancelButton = this.ButCancel;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.ShowInTaskbar = false;
             this.Name = "FrmTargetSettings";
             this.Text = "Target Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ConInterval)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,12 +182,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox TxtFileTarget;
+        private System.Windows.Forms.TextBox TxtPeriodicalTarget;
+        private System.Windows.Forms.Button ButBrowseFileTarget;
+        private System.Windows.Forms.NumericUpDown ConInterval;
+        private System.Windows.Forms.Button ButOk;
+        private System.Windows.Forms.Button ButCancel;
+        private System.Windows.Forms.Button ButBrowsePeriodicalTarget;
     }
 }

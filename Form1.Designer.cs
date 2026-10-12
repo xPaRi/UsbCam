@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ButTakePeriodical = new System.Windows.Forms.Button();
+            this.ButImageSave = new System.Windows.Forms.Button();
+            this.ButImageCopy = new System.Windows.Forms.Button();
             this.ButSetMark = new System.Windows.Forms.Button();
             this.ConAngle = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,20 +51,18 @@
             this.MnuCenter = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MnuAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuTargetSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDarkMode = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.ButTakePeriodical = new System.Windows.Forms.Button();
-            this.ButImageSave = new System.Windows.Forms.Button();
-            this.ButImageCopy = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.ConAngle).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.ConCircleDiameter).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this.pictureBox).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -77,18 +78,56 @@
             this.panel1.Controls.Add(this.LabAngle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(4);
-            this.panel1.Size = new System.Drawing.Size(733, 50);
+            this.panel1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.panel1.Size = new System.Drawing.Size(855, 58);
             this.panel1.TabIndex = 1;
+            // 
+            // ButTakePeriodical
+            // 
+            this.ButTakePeriodical.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButTakePeriodical.Image = Properties.Resources.video;
+            this.ButTakePeriodical.Location = new System.Drawing.Point(706, 5);
+            this.ButTakePeriodical.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ButTakePeriodical.Name = "ButTakePeriodical";
+            this.ButTakePeriodical.Size = new System.Drawing.Size(48, 48);
+            this.ButTakePeriodical.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.ButTakePeriodical, "Periodical take a picture to the file\r\n(see Settings).");
+            this.ButTakePeriodical.UseVisualStyleBackColor = false;
+            // 
+            // ButImageSave
+            // 
+            this.ButImageSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButImageSave.Image = Properties.Resources.file;
+            this.ButImageSave.Location = new System.Drawing.Point(754, 5);
+            this.ButImageSave.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ButImageSave.Name = "ButImageSave";
+            this.ButImageSave.Size = new System.Drawing.Size(48, 48);
+            this.ButImageSave.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ButImageSave, "Take a picture to the file\r\n(see Settings).");
+            this.ButImageSave.UseVisualStyleBackColor = true;
+            // 
+            // ButImageCopy
+            // 
+            this.ButImageCopy.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButImageCopy.Image = Properties.Resources.camera;
+            this.ButImageCopy.Location = new System.Drawing.Point(802, 5);
+            this.ButImageCopy.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ButImageCopy.Name = "ButImageCopy";
+            this.ButImageCopy.Size = new System.Drawing.Size(48, 48);
+            this.ButImageCopy.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.ButImageCopy, "Take a picture to the clipboard.");
+            this.ButImageCopy.UseVisualStyleBackColor = true;
             // 
             // ButSetMark
             // 
-            this.ButSetMark.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.ButSetMark.Location = new System.Drawing.Point(282, 12);
+            this.ButSetMark.Font = new System.Drawing.Font("Wingdings 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 2);
+            this.ButSetMark.Location = new System.Drawing.Point(329, 15);
+            this.ButSetMark.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ButSetMark.Name = "ButSetMark";
             this.ButSetMark.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.ButSetMark.Size = new System.Drawing.Size(30, 29);
+            this.ButSetMark.Size = new System.Drawing.Size(35, 26);
             this.ButSetMark.TabIndex = 5;
             this.ButSetMark.Text = "8";
             this.toolTip1.SetToolTip(this.ButSetMark, "Set guide line (Enter).");
@@ -96,28 +135,22 @@
             // 
             // ConAngle
             // 
-            this.ConAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ConAngle.Location = new System.Drawing.Point(217, 13);
-            this.ConAngle.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.ConAngle.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
+            this.ConAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            this.ConAngle.Location = new System.Drawing.Point(253, 15);
+            this.ConAngle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ConAngle.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            this.ConAngle.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             this.ConAngle.Name = "ConAngle";
-            this.ConAngle.Size = new System.Drawing.Size(56, 26);
+            this.ConAngle.Size = new System.Drawing.Size(65, 26);
             this.ConAngle.TabIndex = 3;
             this.ConAngle.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(157, 15);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            this.label1.Location = new System.Drawing.Point(183, 17);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 20);
             this.label1.TabIndex = 2;
@@ -125,23 +158,21 @@
             // 
             // ConCircleDiameter
             // 
-            this.ConCircleDiameter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ConCircleDiameter.Location = new System.Drawing.Point(73, 13);
-            this.ConCircleDiameter.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
+            this.ConCircleDiameter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            this.ConCircleDiameter.Location = new System.Drawing.Point(85, 15);
+            this.ConCircleDiameter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.ConCircleDiameter.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
             this.ConCircleDiameter.Name = "ConCircleDiameter";
-            this.ConCircleDiameter.Size = new System.Drawing.Size(56, 26);
+            this.ConCircleDiameter.Size = new System.Drawing.Size(65, 26);
             this.ConCircleDiameter.TabIndex = 1;
             this.ConCircleDiameter.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // LabCircleDiameter
             // 
             this.LabCircleDiameter.AutoSize = true;
-            this.LabCircleDiameter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.LabCircleDiameter.Location = new System.Drawing.Point(15, 15);
+            this.LabCircleDiameter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            this.LabCircleDiameter.Location = new System.Drawing.Point(18, 17);
+            this.LabCircleDiameter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LabCircleDiameter.Name = "LabCircleDiameter";
             this.LabCircleDiameter.Size = new System.Drawing.Size(52, 20);
             this.LabCircleDiameter.TabIndex = 0;
@@ -150,8 +181,9 @@
             // LabAngle
             // 
             this.LabAngle.AutoSize = true;
-            this.LabAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.LabAngle.Location = new System.Drawing.Point(330, 15);
+            this.LabAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 238);
+            this.LabAngle.Location = new System.Drawing.Point(385, 17);
+            this.LabAngle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LabAngle.Name = "LabAngle";
             this.LabAngle.Size = new System.Drawing.Size(21, 20);
             this.LabAngle.TabIndex = 4;
@@ -159,21 +191,17 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MnuCamera,
-            this.MnuSettings,
-            this.MnuAbout});
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.MnuCamera, this.MnuSettings, this.MnuAbout });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(733, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(855, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "MnuMain";
             // 
             // MnuCamera
             // 
-            this.MnuCamera.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSeparator1,
-            this.MnuExit});
+            this.MnuCamera.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripSeparator1, this.MnuExit });
             this.MnuCamera.Name = "MnuCamera";
             this.MnuCamera.Size = new System.Drawing.Size(60, 20);
             this.MnuCamera.Text = "&Camera";
@@ -181,25 +209,19 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
             // 
             // MnuExit
             // 
             this.MnuExit.Name = "MnuExit";
-            this.MnuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.MnuExit.Size = new System.Drawing.Size(135, 22);
+            this.MnuExit.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4;
+            this.MnuExit.Size = new System.Drawing.Size(134, 22);
             this.MnuExit.Text = "&Exit";
-            this.MnuExit.Click += new System.EventHandler(this.MnuExit_Click);
+            this.MnuExit.Click += this.MnuExit_Click;
             // 
             // MnuSettings
             // 
-            this.MnuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSeparator3,
-            this.MnuSizeMode,
-            this.toolStripSeparator2,
-            this.MnuTargetSettings,
-            this.toolStripSeparator4,
-            this.MnuAlwaysOnTop});
+            this.MnuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripSeparator3, this.MnuSizeMode, this.toolStripSeparator2, this.MnuTargetSettings, this.toolStripSeparator4, this.MnuAlwaysOnTop, this.MnuDarkMode });
             this.MnuSettings.Name = "MnuSettings";
             this.MnuSettings.Size = new System.Drawing.Size(61, 20);
             this.MnuSettings.Text = "&Settings";
@@ -207,16 +229,13 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(148, 6);
             // 
             // MnuSizeMode
             // 
-            this.MnuSizeMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MnuNormal,
-            this.MnuCenter,
-            this.MnuZoom});
+            this.MnuSizeMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.MnuNormal, this.MnuCenter, this.MnuZoom });
             this.MnuSizeMode.Name = "MnuSizeMode";
-            this.MnuSizeMode.Size = new System.Drawing.Size(150, 22);
+            this.MnuSizeMode.Size = new System.Drawing.Size(151, 22);
             this.MnuSizeMode.Text = "Size Mode";
             // 
             // MnuNormal
@@ -240,98 +259,74 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(147, 6);
-            // 
-            // MnuAlwaysOnTop
-            // 
-            this.MnuAlwaysOnTop.Name = "MnuAlwaysOnTop";
-            this.MnuAlwaysOnTop.Size = new System.Drawing.Size(150, 22);
-            this.MnuAlwaysOnTop.Text = "Always on Top";
-            this.MnuAlwaysOnTop.Click += new System.EventHandler(this.MnuAlwaysOnTop_Click);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(148, 6);
             // 
             // MnuTargetSettings
             // 
             this.MnuTargetSettings.Name = "MnuTargetSettings";
-            this.MnuTargetSettings.Size = new System.Drawing.Size(150, 22);
+            this.MnuTargetSettings.Size = new System.Drawing.Size(151, 22);
             this.MnuTargetSettings.Text = "Targets…";
-            this.MnuTargetSettings.Click += new System.EventHandler(this.MnuTargetSettings_Click);
+            this.MnuTargetSettings.Click += this.MnuTargetSettings_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(148, 6);
+            // 
+            // MnuAlwaysOnTop
+            // 
+            this.MnuAlwaysOnTop.Name = "MnuAlwaysOnTop";
+            this.MnuAlwaysOnTop.Size = new System.Drawing.Size(151, 22);
+            this.MnuAlwaysOnTop.Text = "Always on Top";
+            this.MnuAlwaysOnTop.Click += this.MnuAlwaysOnTop_Click;
+            // 
+            // MnuDarkMode
+            // 
+            this.MnuDarkMode.Name = "MnuDarkMode";
+            this.MnuDarkMode.Size = new System.Drawing.Size(151, 22);
+            this.MnuDarkMode.Text = "Dark Mode";
+            this.MnuDarkMode.Click += this.MnuDarkMode_Click;
             // 
             // MnuAbout
             // 
             this.MnuAbout.Name = "MnuAbout";
             this.MnuAbout.Size = new System.Drawing.Size(52, 20);
             this.MnuAbout.Text = "&About";
-            this.MnuAbout.Click += new System.EventHandler(this.MnuAbout_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            this.MnuAbout.Click += this.MnuAbout_Click;
             // 
             // pictureBox
             // 
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox.Location = new System.Drawing.Point(0, 74);
+            this.pictureBox.Location = new System.Drawing.Point(0, 82);
+            this.pictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(733, 462);
+            this.pictureBox.Size = new System.Drawing.Size(855, 536);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             this.pictureBox.WaitOnLoad = true;
             // 
-            // ButTakePeriodical
-            // 
-            this.ButTakePeriodical.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButTakePeriodical.Image = global::UsbCam.Properties.Resources.video;
-            this.ButTakePeriodical.Location = new System.Drawing.Point(606, 4);
-            this.ButTakePeriodical.Name = "ButTakePeriodical";
-            this.ButTakePeriodical.Size = new System.Drawing.Size(41, 42);
-            this.ButTakePeriodical.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.ButTakePeriodical, "Periodical take a picture to the file\r\n(see Settings).");
-            this.ButTakePeriodical.UseVisualStyleBackColor = false;
-            // 
-            // ButImageSave
-            // 
-            this.ButImageSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButImageSave.Image = global::UsbCam.Properties.Resources.file;
-            this.ButImageSave.Location = new System.Drawing.Point(647, 4);
-            this.ButImageSave.Name = "ButImageSave";
-            this.ButImageSave.Size = new System.Drawing.Size(41, 42);
-            this.ButImageSave.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.ButImageSave, "Take a picture to the file\r\n(see Settings).");
-            this.ButImageSave.UseVisualStyleBackColor = true;
-            // 
-            // ButImageCopy
-            // 
-            this.ButImageCopy.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButImageCopy.Image = global::UsbCam.Properties.Resources.camera;
-            this.ButImageCopy.Location = new System.Drawing.Point(688, 4);
-            this.ButImageCopy.Name = "ButImageCopy";
-            this.ButImageCopy.Size = new System.Drawing.Size(41, 42);
-            this.ButImageCopy.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.ButImageCopy, "Take a picture to the clipboard.");
-            this.ButImageCopy.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(733, 536);
+            this.ClientSize = new System.Drawing.Size(855, 618);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UsbCam";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ConAngle)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ConCircleDiameter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.ConAngle).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.ConCircleDiameter).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.pictureBox).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,6 +361,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Button ButTakePeriodical;
         private System.Windows.Forms.Button ButImageSave;
+        private System.Windows.Forms.ToolStripMenuItem MnuDarkMode;
     }
 }
 

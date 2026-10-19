@@ -76,6 +76,7 @@ public partial class Form1 : Form
         this.KeyPreview = true;
 
         this.Shown += this.Form1_Shown;
+        this.Load += (sender, e) => ApplyDpi();
 
         this.MnuCamera.DropDownOpening += (sender, e) => AddCameraListToMenu(VideoSource);
         this.MnuCamera.DropDownItemClicked += (sender, e) => StartCamera($"{e.ClickedItem.Tag}");
@@ -109,6 +110,71 @@ public partial class Form1 : Form
 
         ShowLabAngle();
     }
+
+    #region DPI
+
+    /// <summary>Velikost ikon tlačítek při 100 % (96 DPI).</summary>
+    private const int ICON_SIZE = 32;
+
+    /// <summary>Výchozí písmo menu při 100 % (96 DPI).</summary>
+    private readonly Font MenuBaseFont = new Font("Segoe UI", 9F);
+
+    /// <summary>
+    /// ToolStrip (menu) ani obrázky tlačítek se při přesunu na monitor s jiným DPI samy nepřizpůsobí,
+    /// proto je přepočítáme podle aktuálního DPI okna.
+    /// </summary>
+    private void ApplyDpi()
+    {
+        if (IsDisposed)
+            return;
+
+        var scale = DeviceDpi / 96f;
+
+        //Původní písmo ani obrázky neuvolňujeme: ToolStrip a jeho položky je mohou ještě používat (Dispose by způsobil ArgumentException při kreslení).
+        //Jde o pár malých objektů při každé změně DPI.
+        menuStrip1.Font = new Font(MenuBaseFont.FontFamily, MenuBaseFont.Size * scale, MenuBaseFont.Style, MenuBaseFont.Unit);
+
+        var size = (int)Math.Round(ICON_SIZE * scale);
+
+        ButTakePeriodical.Image = Scale(Properties.Resources.video, size);
+        ButImageSave.Image = Scale(Properties.Resources.file, size);
+        ButImageCopy.Image = Scale(Properties.Resources.camera, size);
+
+        //Po přesunu na monitor s jiným DPI se v tmavém režimu mohou ovládací prvky vykreslit s černým písmem / pozadím,
+        //proto barvu písma nastavíme výslovně a vynutíme přepočet rozvržení i překreslení.
+        if (Program.DarkMode)
+        {
+            ForeColor = Color.White;
+        }
+
+        PerformLayout();
+        Invalidate(true);
+        Update();
+    }
+
+    private static Bitmap Scale(Image source, int size)
+    {
+        var bitmap = new Bitmap(size, size);
+
+        using (var g = Graphics.FromImage(bitmap))
+        {
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            g.DrawImage(source, 0, 0, size, size);
+        }
+
+        return bitmap;
+    }
+
+    protected override void OnDpiChanged(DpiChangedEventArgs e)
+    {
+        base.OnDpiChanged(e);
+
+        //Framework po události ještě přepočítává velikosti, proto použijeme výsledné DPI až po dokončení zprávy.
+        BeginInvoke(ApplyDpi);
+    }
+
+    #endregion
 
     #region Helpers
 
